@@ -1,5 +1,4 @@
 import socket
-import sys
 
 def receive_message(client_socket):
     try:
