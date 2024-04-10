@@ -75,6 +75,8 @@ def client():
         print(f"Socket error occurred: {e}")
     except KeyboardInterrupt:
         print("\nClient interrupted.")
+    except ValueError:
+        print("Invalid port number")
     except Exception as e:
         print(f"An error occurred: {e}")
     finally:

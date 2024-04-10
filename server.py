@@ -1,5 +1,6 @@
 import socket
 
+# Method for receiving messages from the client
 def receive_message(client_socket):
     try:
         message = client_socket.recv(1024).decode()
@@ -8,19 +9,23 @@ def receive_message(client_socket):
         print(f"Error receiving message: {e}")
         return None
 
+# Method for sending messages to the client
 def send_message(client_socket, message):
     try:
         client_socket.send(message.encode())
     except socket.error as e:
         print(f"Error sending message: {e}")
 
+# Method for the server
 def server():
+    # Get the IP address and port number from the user
     host_input = input("Enter IP address (press enter for localhost): ").strip()
     if host_input == '':
         host = '127.0.0.1'
     else:
         host = host_input
 
+    # Get the port number from the user
     port_input = input("Enter port number (press enter for default port): ").strip()
     if port_input == '':
         port = 12345
@@ -30,6 +35,7 @@ def server():
     try:
         port = int(port)  # Convert port to integer
 
+        # Validate port number
         if not (0 < port < 65536):
             print("Port number must be between 1 and 65535.")
             return
@@ -42,8 +48,10 @@ def server():
                 print("Invalid IP address")
                 return
 
+        # Get the username from the user
         username = input("Enter your username: ")
 
+        # Connect to the client
         server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         server_socket.bind((host, port))
         server_socket.listen(1)
@@ -52,6 +60,7 @@ def server():
         client_socket, client_address = server_socket.accept()
         print(f"Connected with {client_address}. Type in 'end' to exit. When your entered username comes up with a ':' you have been prompted to enter your message to send back to the client.")
 
+        # Send and receive messages
         while True:
             message = receive_message(client_socket)
             if message.endswith('end'):
@@ -67,6 +76,7 @@ def server():
                 if reply.lower() == 'end':
                     break
 
+    # Handle exceptions
     except socket.error as e:
         print(f"Socket error occurred: {e}")
     except KeyboardInterrupt:
