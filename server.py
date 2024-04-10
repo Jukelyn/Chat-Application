@@ -50,7 +50,7 @@ def server():
         print("Server is waiting for connection and a message from the client...")
 
         client_socket, client_address = server_socket.accept()
-        print(f"Connected with {client_address}. Type in 'end' to exit. When your entered username comes up with a ':' you have been prompted to enter your message to send back to the client")
+        print(f"Connected with {client_address}. Type in 'end' to exit. When your entered username comes up with a ':' you have been prompted to enter your message to send back to the client.")
 
         while True:
             message = receive_message(client_socket)

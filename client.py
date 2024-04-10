@@ -27,7 +27,6 @@ def client():
         port = 12345
     else:
         port = port_input
-        
     port = int(port)  # Convert port to integer
 
     if not (0 < port < 65536):
