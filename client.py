@@ -26,7 +26,6 @@ def client():
     else:
         host = host_input
 
-    # Get the port number from the user
     port_input = input("Enter port number (press enter for default port): ").strip()
     if port_input == '':
         port = 12345

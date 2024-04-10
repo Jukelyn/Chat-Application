@@ -18,6 +18,7 @@ def send_message(client_socket, message):
 
 # Method for the server
 def server():
+    
     # Get the IP address and port number from the user
     host_input = input("Enter IP address (press enter for localhost): ").strip()
     if host_input == '':
@@ -25,7 +26,6 @@ def server():
     else:
         host = host_input
 
-    # Get the port number from the user
     port_input = input("Enter port number (press enter for default port): ").strip()
     if port_input == '':
         port = 12345
