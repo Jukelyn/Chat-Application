@@ -44,8 +44,7 @@ def client():
     except Exception as e:
         print(f"An error occurred: {e}")
     finally:
-        if 'client_socket' in locals():
-            client_socket.close()
+        client_socket.close()
 
 if __name__ == "__main__":
     client()

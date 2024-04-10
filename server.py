@@ -67,6 +67,8 @@ def server():
                 if reply.lower() == 'end':
                     break
 
+    except socket.error as e:
+        print(f"Socket error occurred: {e}")
     except KeyboardInterrupt:
         print("\nServer interrupted.")
     except ValueError:
