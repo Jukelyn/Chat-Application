@@ -15,7 +15,7 @@ def send_message(server_socket, message):
         print(f"Error sending message: {e}")
 
 def client():
-    host_input = input("Enter server IP address: ").strip()
+    host_input = input("Enter server IP address (press enter for default host): ").strip()
     if host_input == '':
         host = '127.0.0.1'
     else:
@@ -27,6 +27,20 @@ def client():
         port = 12345
     else:
         port = port_input
+        
+    port = int(port)  # Convert port to integer
+
+    if not (0 < port < 65536):
+        print("Port number must be between 1 and 65535.")
+        return
+
+    # Validate IP address if it's not the default
+    if host != '127.0.0.1':
+        try:
+            socket.inet_aton(host)
+        except socket.error:
+            print("Invalid IP address")
+            return
 
     username = input("Enter your username: ")
 
