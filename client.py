@@ -15,8 +15,19 @@ def send_message(server_socket, message):
         print(f"Error sending message: {e}")
 
 def client():
-    host = input("Enter server IP address: ")
-    port = input("Enter server port number: ")
+    host_input = input("Enter server IP address: ").strip()
+    if host_input == '':
+        host = '127.0.0.1'
+    else:
+        host = host_input
+
+
+    port_input = input("Enter port number (press enter for default port): ").strip()
+    if port_input == '':
+        port = 12345
+    else:
+        port = port_input
+
     username = input("Enter your username: ")
 
     try:
@@ -44,7 +55,8 @@ def client():
     except Exception as e:
         print(f"An error occurred: {e}")
     finally:
-        client_socket.close()
+        if 'client_socket' in locals():
+            client_socket.close()
 
 if __name__ == "__main__":
     client()
