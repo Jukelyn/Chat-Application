@@ -37,12 +37,15 @@ def client():
             else:
                 print(reply)
 
+    except socket.error as e:
+        print(f"Socket error occurred: {e}")
     except KeyboardInterrupt:
         print("\nClient interrupted.")
     except Exception as e:
         print(f"An error occurred: {e}")
     finally:
-        client_socket.close()
+        if 'client_socket' in locals():
+            client_socket.close()
 
 if __name__ == "__main__":
     client()
