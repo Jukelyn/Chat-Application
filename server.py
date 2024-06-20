@@ -1,7 +1,13 @@
 import socket
 
-# Method for receiving messages from the client
+DEFAULT_IP = "127.0.0.1"
+DEFAULT_PORT = 12345
+
+
 def receive_message(client_socket):
+    """
+    Method for receiving messages from the client
+    """
     try:
         message = client_socket.recv(1024).decode()
         return message
@@ -9,45 +15,64 @@ def receive_message(client_socket):
         print(f"Error receiving message: {e}")
         return None
 
-# Method for sending messages to the client
+
 def send_message(client_socket, message):
+    """
+    Method for sending messages to the client
+    """
     try:
         client_socket.send(message.encode())
     except socket.error as e:
         print(f"Error sending message: {e}")
 
-# Method for the server
-def server():
-    
-    # Get the IP address and port number from the user
-    host_input = input("Enter IP address (press enter for localhost): ").strip()
-    if host_input == '':
-        host = '127.0.0.1'
-    else:
-        host = host_input
 
-    port_input = input("Enter port number (press enter for default port): ").strip()
-    if port_input == '':
-        port = 12345
-    else:
-        port = port_input
+def get_host_ip():
+    """
+    Gets the host's IP address.
+    If none is provided, defaults to 127.0.0.1 (localhost).
+    """
+
+    ip = input("Enter server IP address (press enter for default host): ")
+    ip = ip.strip() or DEFAULT_IP  # Defaults to 127.0.0.1 if input is blank
+
+    return ip
+
+
+def get_port() -> int:
+    """
+    Get's the port to use.
+    If none is provided, defaults to 12345.
+    """
+
+    while True:  # Should keep asking until valid input
+        port = input(
+            "Enter port number (press enter for default port): ").strip()
+
+        if not port:
+            return DEFAULT_PORT  # Defaults to 12345 if input is blank
+
+        # Validate inputted port number
+        try:
+            port = int(port)
+            if port not in range(1, 65536):
+                print("Port number must be between 1 and 65535.")
+                continue  # Asks again
+            else:
+                return port
+        except ValueError:
+            print("You must enter a valid integer.")
+
+
+def server():
+    """
+    Method for the server
+    """
+
+    host = get_host_ip()
+
+    port = get_port()
 
     try:
-        port = int(port)  # Convert port to integer
-
-        # Validate port number
-        if not (0 < port < 65536):
-            print("Port number must be between 1 and 65535.")
-            return
-
-        # Validate IP address if it's not the default
-        if host != '127.0.0.1':
-            try:
-                socket.inet_aton(host)
-            except socket.error:
-                print("Invalid IP address")
-                return
-
         # Get the username from the user
         username = input("Enter your username: ")
 
@@ -55,10 +80,14 @@ def server():
         server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         server_socket.bind((host, port))
         server_socket.listen(1)
-        print("Server is waiting for connection and a message from the client...")
+        print("Server is waiting for connection and a message "
+              "from the client...")
 
         client_socket, client_address = server_socket.accept()
-        print(f"Connected with {client_address}. Type in 'end' to exit. When your entered username comes up with a ':' you have been prompted to enter your message to send back to the client.")
+        print(f"Connected with {client_address}. Type in 'end' to exit."
+              "When your entered username comes up with a ':' you have "
+              "been prompted to enter your message to send back to the "
+              "client.")
 
         # Send and receive messages
         while True:
@@ -76,7 +105,7 @@ def server():
                 if reply.lower() == 'end':
                     break
 
-    # Handle exceptions
+    # Exception handling
     except socket.error as e:
         print(f"Socket error occurred: {e}")
     except KeyboardInterrupt:
