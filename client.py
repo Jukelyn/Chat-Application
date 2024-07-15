@@ -1,3 +1,6 @@
+"""
+Socket is used as a low-level networking interface
+"""
 import socket
 
 DEFAULT_IP = "127.0.0.1"
@@ -55,15 +58,15 @@ def get_port() -> int:
     """
 
     while True:  # Should keep asking until valid input
-        port = input(
+        port_input = input(
             "Enter port number (press enter for default port): ").strip()
 
-        if not port:
+        if not port_input:
             return DEFAULT_PORT  # Defaults to 12345 if input is blank
 
         # Validate inputted port number
         try:
-            port = int(port)
+            port = int(port_input)
             if port not in range(1, 65536):
                 print("Port number must be between 1 and 65535.")
                 continue  # Asks again
@@ -115,7 +118,7 @@ def client():
         print("\nClient interrupted.")
     except ValueError:
         print("Invalid port number")
-    except Exception as e:
+    except Exception as e:  # pylint: disable=broad-exception-caught
         print(f"An error occurred: {e}")
     finally:
         if 'client_socket' in locals():
